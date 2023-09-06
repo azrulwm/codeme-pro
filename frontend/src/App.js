@@ -21,15 +21,17 @@ function App() {
 
   const handlePlaceOrder = () => {
     console.log(selectedItems);
-    // fetch("/api/placeOrder", {
-    //   method: "POST",
-    //   headers: { "Content-Type": "application/json" },
-    //   body: JSON.stringify({ items: selectedItems }),
-    // })
-    //   .then((response) => response.json())
-    //   .then((data) => {
-    //     setPackages(data.packages);
-    //   });
+
+    fetch(`${process.env.REACT_APP_API_BASE_URL}/orders`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ ids: selectedItems }),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data);
+        // setPackages(data.packages);
+      });
   };
 
   return (

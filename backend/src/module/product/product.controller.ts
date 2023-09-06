@@ -7,7 +7,7 @@ export class ProductController {
 
   @Get('/')
   async getProducts() {
-    const result = await this.productService.fetchAllUser();
+    const result = await this.productService.fetchAllProducts();
 
     return result;
   }

@@ -1,6 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
+import { Model, Types } from 'mongoose';
 import { Product } from './product.model';
 
 @Injectable()
@@ -9,7 +9,7 @@ export class ProductService {
     @InjectModel('Product') private readonly ProductModel: Model<Product>,
   ) {}
 
-  async fetchAllUser(): Promise<Product[]> {
+  async fetchAllProducts(): Promise<Product[]> {
     const result = await this.ProductModel.find().lean().exec();
 
     if (!result) throw new NotFoundException('No Products Found');
@@ -22,5 +22,20 @@ export class ProductService {
     });
 
     return updatedResult;
+  }
+
+  async fetchManyProductsByIds(ids: string[]): Promise<Product[]> {
+    const objectIds = ids.map((id) => new Types.ObjectId(id));
+
+    try {
+      let results = [];
+
+      results = await this.ProductModel.find({
+        _id: { $in: objectIds },
+      }).exec();
+      return results;
+    } catch (error) {
+      throw new error.message();
+    }
   }
 }

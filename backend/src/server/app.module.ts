@@ -1,10 +1,13 @@
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 import { ProductModule } from '../module/product/product.module';
-
-console.log(process.env.DATABASE_URL);
+import { OrderModule } from '../module/order/order.module';
 
 @Module({
-  imports: [MongooseModule.forRoot(process.env.DATABASE_URL), ProductModule],
+  imports: [
+    MongooseModule.forRoot(process.env.DATABASE_URL),
+    ProductModule,
+    OrderModule,
+  ],
 })
 export class AppModule {}
