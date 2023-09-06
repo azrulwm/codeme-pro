@@ -4,4 +4,30 @@
 
 .App {
   text-align: center;
+  background-color: #808080;
+  padding-top: 40px;
+}
+
+.btn-primary {
+  background-image: linear-gradient(to right, #4c68d7, #8c43d6);
+  color: white;
+  margin-top: 20px;
+  margin-bottom: 50px;
+  padding: 12px 24px;
+  border-radius: 9999px;
+  font-weight: 500;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  border: none;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 8px rgba(0, 0, 0, 0.1);
+}
+
+.btn-primary:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(140, 67, 214, 0.5);
 }
