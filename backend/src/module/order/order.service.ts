@@ -1,5 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
-import { Order } from './order.model';
+import { Injectable } from '@nestjs/common';
 import { Product } from '../product/product.model';
 
 @Injectable()
@@ -32,24 +31,42 @@ export class OrderService {
       totalCost += item.price;
       totalWeight += item.weight;
     }
-
     if (currentPackage.items.length) packages.push(currentPackage);
 
-    // Balance weights if multiple packages
+    // Ensure no package exceeds 5000g limit
+    for (let i = 0; i < packages.length; i++) {
+      const pkg = packages[i];
+      while (pkg.weight > 5000) {
+        // Create a new package with the heaviest item
+        const heaviestItemIndex = pkg.items.findIndex(
+          (a: Product, b: Product) => b.weight - a.weight,
+        );
+        const heaviestItem = pkg.items.splice(heaviestItemIndex, 1)[0];
+
+        packages.push({
+          items: [heaviestItem],
+          cost: heaviestItem.price,
+          weight: heaviestItem.weight,
+        });
+
+        pkg.weight -= heaviestItem.weight;
+        pkg.cost -= heaviestItem.price;
+      }
+    }
+
+    // Balancing weights
     if (packages.length > 1) {
-      let avgWeight = totalWeight / packages.length;
-
-      console.log('Balancing packages weight');
-
+      const avgWeight = totalWeight / packages.length;
       let maxIterations = 200;
       let changesMade = true;
 
-      // To prevent infinite while loop
-      while (changesMade && maxIterations > 0) {
-        console.log('Sorting....');
+      console.log('Balancing weight');
 
+      while (changesMade && maxIterations > 0) {
         changesMade = false;
         maxIterations--;
+
+        console.log(`Still sorting....`);
 
         const sortedPackages = [...packages].sort(
           (a, b) => a.weight - b.weight,
@@ -77,12 +94,7 @@ export class OrderService {
           }
         }
       }
-
-      if (maxIterations <= 0) {
-        console.warn('Weight balancing reached max iterations!');
-      }
     }
-
     return packages;
   }
 }
