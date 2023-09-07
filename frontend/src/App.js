@@ -16,7 +16,13 @@ function App() {
   }, []);
 
   const handleSelectItem = (itemId) => {
-    setSelectedItems((prev) => [...prev, itemId]);
+    setSelectedItems((prev) => {
+      if (prev.includes(itemId)) {
+        return prev.filter((id) => id !== itemId);
+      } else {
+        return [...prev, itemId];
+      }
+    });
   };
 
   const handlePlaceOrder = () => {
