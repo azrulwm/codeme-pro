@@ -1,15 +1,18 @@
 import { Injectable } from '@nestjs/common';
 import { Product } from '../product/product.model';
+import { CourierService } from '../courier/courier.service';
 
 @Injectable()
 export class OrderService {
+  constructor(private readonly courierService: CourierService) {}
+
   createOrder(params: Product[]) {
     const result = this.createPackages(params);
 
     return result;
   }
 
-  createPackages(items: Product[]) {
+  async createPackages(items: Product[]) {
     let totalCost = 0;
     let totalWeight = 0;
     const packages = [];
@@ -95,6 +98,16 @@ export class OrderService {
         }
       }
     }
-    return packages;
+
+    const packagesAddCourier = await Promise.all(
+      packages.map(async (item) => {
+        const charges = await this.courierService.fetchCourierCharges(
+          item.weight,
+        );
+        return { ...item, charges };
+      }),
+    );
+
+    return packagesAddCourier;
   }
 }
