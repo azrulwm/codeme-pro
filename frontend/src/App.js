@@ -41,7 +41,7 @@ function App() {
       })
       .then((data) => {
         console.log(data);
-        // setPackages(data.packages);
+        setPackages(data);
       })
       .catch((error) => {
         console.log(
@@ -50,14 +50,20 @@ function App() {
         );
       });
   };
-
   return (
-    <div className="App">
-      <ItemList items={items} onSelectItem={handleSelectItem} />
-      <button onClick={handlePlaceOrder} className="btn-primary">
-        Place order
-      </button>
-      <OrderSummary packages={packages} />
+    <div className="App bg-gray-200 min-h-screen flex items-center justify-center p-4">
+      <div className="flex space-x-8">
+        <div className="flex flex-col items-center space-y-4">
+          <ItemList items={items} onSelectItem={handleSelectItem} />
+          <button
+            onClick={handlePlaceOrder}
+            className="btn-primary text-white py-2 px-6 rounded-full hover:bg-blue-500 transition-colors duration-300"
+          >
+            Place order
+          </button>
+        </div>
+        {packages.length > 0 && <OrderSummary packages={packages} />}
+      </div>
     </div>
   );
 }
