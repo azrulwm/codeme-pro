@@ -12,7 +12,7 @@ const OrderSummary = ({ packages }) => {
           <p className="text-gray-600 mt-2">
             Items:{" "}
             <span className="text-gray-500">
-              {pkg.items.map((i) => `Item ${i.name}`).join(", ")}
+              {pkg.items.map((i) => `${i.name}`).join(", ")}
             </span>
           </p>
           <p className="text-gray-600 mt-2">
