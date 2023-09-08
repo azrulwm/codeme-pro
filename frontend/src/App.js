@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import "./Index.css";
+import "./index.css";
 import ItemList from "./components/ItemList";
 import OrderSummary from "./components/OrderSummary";
 
